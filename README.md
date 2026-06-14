@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=Playfair+Display&size=40&pause=1000&color=F4A821&center=true&vCenter=true&width=750&lines=🍱+Food+Wastage+Management+System;Connecting+Providers+with+Those+in+Need;Python+%7C+MySQL+%7C+Streamlit+%7C+Plotly" alt="Typing SVG" />
+<img src="https://readme-typing-svg.demolab.com?font=Playfair+Display&size=40&pause=1000&color=F4A821&center=true&vCenter=true&width=750&lines=🍱+Local+Food+Wastage+Management+System" alt="Typing SVG" />
 
 <br>
 
@@ -42,20 +42,29 @@ Food wastage is a critical issue — restaurants and households discard surplus 
 
 ---
 
-## ⚙️ Tech Stack
-
-| Layer | Technology | Purpose |
-|---|---|---|
-| 🗄️ Database | MySQL | Data storage & query execution |
-| 🐍 Backend | Python, Pandas | Data processing & DB connectivity |
-| 🖥️ Frontend | Streamlit | Interactive web application |
-| 📊 Visualization | Plotly | Interactive charts & dashboards |
-| 🔧 IDE | VS Code, MySQL Workbench | Development environment |
-
----
-
 ## 🗄️ Database Schema
 
+```
+┌──────────────────┐          ┌───────────────────────┐          ┌─────────────────┐
+│    providers     │          │     food_listings     │          │     claims      │
+│──────────────────│          │───────────────────────│          │─────────────────│
+│ Provider_ID  PK  │─────────▶│ Provider_ID       FK  │          │ Claim_ID     PK │
+│ Name             │          │ Food_ID           PK  │─────────▶│ Food_ID      FK │
+│ Type             │          │ Food_Name             │          │ Receiver_ID  FK │
+│ City             │          │ Quantity              │          │ Status          │
+│ Contact          │          │ Expiry_Date           │          │ Timestamp       │
+└──────────────────┘          │ Food_Type             │          └─────────────────┘
+                              │ Meal_Type             │                   │
+┌──────────────────┐          │ Location              │                   │
+│    receivers     │          └───────────────────────┘                   │
+│──────────────────│                                                       │
+│ Receiver_ID  PK  │◀──────────────────────────────────────────────────────
+│ Name             │
+│ Type             │
+│ City             │
+│ Contact          │
+└──────────────────┘
+```
 
 **Relationships:**
 - `providers` ──1:N──▶ `food_listings`
@@ -141,25 +150,9 @@ Food wastage is a critical issue — restaurants and households discard surplus 
 
 ---
 
-## 📸 Screenshots
-
-### 🏠 Dashboard
-![Dashboard](screenshots/dashboard.png)
-
-### 🔍 SQL Query Results
-![SQL Queries](screenshots/queries.png)
-
-### 🥗 Food Listings with Filters
-![Food Listings](screenshots/food_listings.png)
-
-### 📋 CRUD Operations
-![CRUD](screenshots/crud.png)
-
----
-
 ## 🌐 Live Demo
 
-> 🔗 **Live link will be added here after deployment**
+> 🔗 **Live link will be updated here after deployment**
 
 ---
 
@@ -183,11 +176,17 @@ streamlit run app.py
 
 ## 📂 Repository Structure
 
+```
+food-wastage-management/
+│
+├── 📄 app.py               ← Streamlit application
+├── 📄 requirements.txt     ← Python dependencies
+└── 📄 README.md            ← Project documentation
+```
+
 ---
 
 <div align="center">
-
-**Made with 💚 and a lot of SQL**
 
 <a href="https://github.com/pritwrk">
   <img src="https://img.shields.io/badge/GitHub-pritwrk-181717?style=for-the-badge&logo=github&logoColor=white"/>
@@ -197,4 +196,3 @@ streamlit run app.py
 <sub>Built by <a href="https://github.com/pritwrk"><b>Pritam Verma</b></a></sub>
 
 </div>
-
