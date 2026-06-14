@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=Playfair+Display&size=40&pause=1000&color=F4A821&center=true&vCenter=true&width=750&lines=🍱+Local+Food+Wastage+Management+System" alt="Typing SVG" />
+# 🍱 Local Food Wastage Management System
 
 <br>
 
