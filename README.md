@@ -3,7 +3,6 @@
 # 🍱 Local Food Wastage Management System
 
 <br>
-
 <p><em>A data-driven platform to reduce local food wastage — bridging the gap between surplus and scarcity.</em></p>
 
 
