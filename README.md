@@ -6,17 +6,7 @@
 
 <p><em>A data-driven platform to reduce local food wastage — bridging the gap between surplus and scarcity.</em></p>
 
-<br>
 
-<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
-<img src="https://img.shields.io/badge/MySQL-1a5276?style=for-the-badge&logo=mysql&logoColor=white"/>
-<img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white"/>
-<img src="https://img.shields.io/badge/Plotly-3D4DB7?style=for-the-badge&logo=plotly&logoColor=white"/>
-<img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white"/>
-<img src="https://img.shields.io/badge/15+%20SQL%20Queries-F4A821?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/Status-Completed-1a5276?style=for-the-badge"/>
-
-<br><br>
 
 <a href="#">
   <img src="https://img.shields.io/badge/🚀%20Live%20Demo-Coming%20Soon-F4A821?style=for-the-badge&logo=googlechrome&logoColor=white"/>
