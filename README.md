@@ -37,7 +37,7 @@ Food wastage is a critical issue — restaurants and households discard surplus 
 ┌──────────────────┐          ┌───────────────────────┐          ┌─────────────────┐
 │    providers     │          │     food_listings     │          │     claims      │
 │──────────────────│          │───────────────────────│          │─────────────────│
-│ Provider_ID  PK  │─────────▶│ Provider_ID       FK  │          │ Claim_ID     PK │
+│ Provider_ID  PK  │─────────▶│ Provider_ID       FK │          │ Claim_ID     PK │
 │ Name             │          │ Food_ID           PK  │─────────▶│ Food_ID      FK │
 │ Type             │          │ Food_Name             │          │ Receiver_ID  FK │
 │ City             │          │ Quantity              │          │ Status          │
