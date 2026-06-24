@@ -5,8 +5,6 @@
 <br>
 <p><em>A data-driven platform to reduce local food wastage — bridging the gap between surplus and scarcity.</em></p>
 
-
-
 <a href="#">
   <img src="https://img.shields.io/badge/🚀%20Live%20Demo-Coming%20Soon-F4A821?style=for-the-badge&logo=googlechrome&logoColor=white"/>
 </a>
@@ -14,6 +12,12 @@
 <a href="https://github.com/pritwrk/food-wastage-management">
   <img src="https://img.shields.io/badge/View%20Repository-181717?style=for-the-badge&logo=github&logoColor=white"/>
 </a>
+
+<br><br>
+
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)
 
 </div>
 
@@ -33,32 +37,52 @@ Food wastage is a critical issue — restaurants and households discard surplus 
 
 ## 🗄️ Database Schema
 
-```
-┌──────────────────┐          ┌───────────────────────┐          ┌─────────────────┐
-│    providers     │          │     food_listings     │          │     claims      │
-│──────────────────│          │───────────────────────│          │─────────────────│
-│ Provider_ID  PK  │─────────▶│ Provider_ID       FK │          │ Claim_ID     PK │
-│ Name             │          │ Food_ID           PK  │─────────▶│ Food_ID      FK │
-│ Type             │          │ Food_Name             │          │ Receiver_ID  FK │
-│ City             │          │ Quantity              │          │ Status          │
-│ Contact          │          │ Expiry_Date           │          │ Timestamp       │
-└──────────────────┘          │ Food_Type             │          └─────────────────┘
-                              │ Meal_Type             │                   │
-┌──────────────────┐          │ Location              │                   │
-│    receivers     │          └───────────────────────┘                   │
-│──────────────────│                                                       │
-│ Receiver_ID  PK  │◀──────────────────────────────────────────────────────
-│ Name             │
-│ Type             │
-│ City             │
-│ Contact          │
-└──────────────────┘
+```mermaid
+erDiagram
+    providers ||--o{ food_listings : "provides"
+    food_listings ||--o{ claims : "claimed via"
+    receivers ||--o{ claims : "makes"
+
+    providers {
+        int Provider_ID PK
+        string Name
+        string Type
+        string City
+        string Contact
+    }
+
+    food_listings {
+        int Food_ID PK
+        int Provider_ID FK
+        string Food_Name
+        int Quantity
+        date Expiry_Date
+        string Food_Type
+        string Meal_Type
+        string Location
+    }
+
+    claims {
+        int Claim_ID PK
+        int Food_ID FK
+        int Receiver_ID FK
+        string Status
+        datetime Timestamp
+    }
+
+    receivers {
+        int Receiver_ID PK
+        string Name
+        string Type
+        string City
+        string Contact
+    }
 ```
 
 **Relationships:**
-- `providers` ──1:N──▶ `food_listings`
-- `food_listings` ──1:N──▶ `claims`
-- `receivers` ──1:N──▶ `claims`
+- `providers` — 1:N → `food_listings` &nbsp;*(one provider lists many food items)*
+- `food_listings` — 1:N → `claims` &nbsp;*(one listing can have multiple claims)*
+- `receivers` — 1:N → `claims` &nbsp;*(one receiver can make multiple claims)*
 
 ---
 
@@ -139,17 +163,12 @@ Food wastage is a critical issue — restaurants and households discard surplus 
 
 ---
 
-## 🌐 Live Demo
-
-> 🔗 **Live link will be updated here after deployment**
-
----
-
 ## 🚀 How to Run Locally
 
 ```bash
 # Step 1 — Clone the repository
 git clone https://github.com/pritwrk/food-wastage-management.git
+cd food-wastage-management
 
 # Step 2 — Install dependencies
 pip install -r requirements.txt
@@ -175,13 +194,23 @@ food-wastage-management/
 
 ---
 
+## 🌐 Live Demo
+
+> 🔗 **Live link will be updated here after Streamlit Cloud deployment**
+
+---
+
 <div align="center">
 
 <a href="https://github.com/pritwrk">
   <img src="https://img.shields.io/badge/GitHub-pritwrk-181717?style=for-the-badge&logo=github&logoColor=white"/>
 </a>
+&nbsp;
+<a href="https://linkedin.com/in/pritam-verma-02721531a">
+  <img src="https://img.shields.io/badge/LinkedIn-Pritam%20Verma-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"/>
+</a>
 
 <br><br>
-<sub>Built by <a href="https://github.com/pritwrk"><b>Pritam Verma</b></a></sub>
+<sub>Built with ❤️ by <a href="https://github.com/pritwrk"><b>Pritam Verma</b></a></sub>
 
 </div>
