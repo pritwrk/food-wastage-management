@@ -5,10 +5,12 @@ import plotly.express as px
 
 def get_connection():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="7836",
-        database="food_wastage_db"
+        host=st.secrets["DB_HOST"],
+        port=int(st.secrets["DB_PORT"]),
+        user=st.secrets["DB_USER"],
+        password=st.secrets["DB_PASSWORD"],
+        database=st.secrets["DB_NAME"],
+        ssl_ca=st.secrets["SSL_CA_PATH"]
     )
 
 def run_query(query):
@@ -39,7 +41,6 @@ if menu == "Dashboard":
 
     st.divider()
 
-    # Chart 1 - Claims Status Pie Chart
     col_a, col_b = st.columns(2)
     with col_a:
         df_status = run_query("SELECT Status, COUNT(*) as count FROM claims GROUP BY Status")
@@ -49,7 +50,6 @@ if menu == "Dashboard":
         fig1.update_layout(paper_bgcolor="rgba(0,0,0,0)", font_color="white")
         st.plotly_chart(fig1, use_container_width=True)
 
-    # Chart 2 - Meal Type Bar Chart
     with col_b:
         df_ftype = run_query("SELECT Food_Type, COUNT(*) as count FROM food_listings GROUP BY Food_Type ORDER BY count DESC")
         fig2 = px.bar(df_ftype, x="Food_Type", y="count",
@@ -58,10 +58,9 @@ if menu == "Dashboard":
                       color_discrete_map={"Vegetarian": "#2ecc71", "Non-Vegetarian": "#e74c3c", "Vegan": "#3498db"})
         fig2.update_layout(paper_bgcolor="rgba(0,0,0,0)", font_color="white", showlegend=False)
         st.plotly_chart(fig2, use_container_width=True)
+
     st.divider()
 
-    # Chart 3 - Top 10 Cities Bar Chart
-   # Chart 3 - Provider Type by Total Quantity
     df_ptype = run_query("SELECT p.Type, SUM(fl.Quantity) as total_quantity FROM providers p JOIN food_listings fl ON p.Provider_ID = fl.Provider_ID GROUP BY p.Type ORDER BY total_quantity DESC")
     fig3 = px.bar(df_ptype, x="Type", y="total_quantity",
                   title="Total Food Quantity by Provider Type",
@@ -69,6 +68,7 @@ if menu == "Dashboard":
                   color_discrete_sequence=["#2ecc71", "#3498db", "#e74c3c", "#f39c12"])
     fig3.update_layout(paper_bgcolor="rgba(0,0,0,0)", font_color="white", showlegend=False)
     st.plotly_chart(fig3, use_container_width=True)
+
 elif menu == "SQL Queries":
     st.subheader("SQL Query Results")
     queries = {
@@ -116,12 +116,12 @@ elif menu == "Providers":
     types = ["All"] + list(run_query("SELECT DISTINCT Type FROM providers ORDER BY Type")["Type"])
     city = col1.selectbox("City", cities)
     ptype = col2.selectbox("Type", types)
-    
+
     query = "SELECT Name, Type, City, Contact FROM providers WHERE 1=1"
     if city != "All": query += f" AND City = '{city}'"
     if ptype != "All": query += f" AND Type = '{ptype}'"
-    
-    st.dataframe(run_query(query), use_container_width=True)    
+
+    st.dataframe(run_query(query), use_container_width=True)
 
 elif menu == "Receivers":
     st.subheader("Receivers Contact Details")
@@ -130,18 +130,18 @@ elif menu == "Receivers":
     types = ["All"] + list(run_query("SELECT DISTINCT Type FROM receivers ORDER BY Type")["Type"])
     city = col1.selectbox("City", cities)
     rtype = col2.selectbox("Type", types)
-    
+
     query = "SELECT * FROM receivers WHERE 1=1"
     if city != "All": query += f" AND City = '{city}'"
     if rtype != "All": query += f" AND Type = '{rtype}'"
-    
+
     st.dataframe(run_query(query), use_container_width=True)
 
 elif menu == "CRUD Operations":
     st.subheader("CRUD Operations")
-    
+
     operation = st.radio("Operation", ["Add", "Update", "Delete"], horizontal=True)
-    
+
     if operation == "Add":
         st.subheader("Add New Food Listing")
         with st.form("add_food"):
@@ -157,8 +157,8 @@ elif menu == "CRUD Operations":
                 conn = get_connection()
                 cursor = conn.cursor()
                 cursor.execute(
-                    "INSERT INTO food_listings (Food_Name, Quantity, Expiry_Date, Provider_ID, Provider_Type, Location, Food_Type, Meal_Type) VALUES (%s,%s,%s,%s,(SELECT Type FROM providers WHERE Provider_ID=%s),%s,%s,%s)",
-                    (food_name, quantity, expiry, provider_id, provider_id, location, food_type, meal_type)
+                    "INSERT INTO food_listings (Food_Name, Quantity, Expiry_Date, Provider_ID, Location, Food_Type, Meal_Type) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+                    (food_name, quantity, expiry, provider_id, location, food_type, meal_type)
                 )
                 conn.commit()
                 conn.close()
@@ -170,14 +170,14 @@ elif menu == "CRUD Operations":
         with st.form("update_food"):
             new_quantity = st.number_input("New Quantity", min_value=1)
             new_expiry = st.date_input("New Expiry Date")
-            new_status = st.selectbox("Food Type", ["Vegetarian", "Non-Vegetarian", "Vegan"])
+            new_food_type = st.selectbox("Food Type", ["Vegetarian", "Non-Vegetarian", "Vegan"])
             submitted = st.form_submit_button("Update")
             if submitted:
                 conn = get_connection()
                 cursor = conn.cursor()
                 cursor.execute(
                     "UPDATE food_listings SET Quantity=%s, Expiry_Date=%s, Food_Type=%s WHERE Food_ID=%s",
-                    (new_quantity, new_expiry, new_status, food_id)
+                    (new_quantity, new_expiry, new_food_type, food_id)
                 )
                 conn.commit()
                 if cursor.rowcount == 0:
@@ -195,8 +195,8 @@ elif menu == "CRUD Operations":
             cursor = conn.cursor()
             cursor.execute("DELETE FROM food_listings WHERE Food_ID=%s", (food_id,))
             conn.commit()
-            conn.close()
             if cursor.rowcount == 0:
                 st.error("Food ID nahi mila!")
             else:
                 st.success(f"Food ID {food_id} deleted!")
+            conn.close()
