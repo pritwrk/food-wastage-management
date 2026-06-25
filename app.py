@@ -9,8 +9,7 @@ def get_connection():
         port=int(st.secrets["DB_PORT"]),
         user=st.secrets["DB_USER"],
         password=st.secrets["DB_PASSWORD"],
-        database=st.secrets["DB_NAME"],
-        ssl_ca=st.secrets["SSL_CA_PATH"]
+        database=st.secrets["DB_NAME"]
     )
 
 def run_query(query):
